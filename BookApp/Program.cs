@@ -52,9 +52,14 @@ namespace BookApp
                     Author = book.AuthorsLink.Select(s => s.Author.Name)
                 }).First();
 
-                var df = ctx.Books;
+                var ctxBooks = ctx.Books;
+                var dto = new List<BookListDto>();
 
-                var answer = StaticBookExtansionDto.MapBookToDto(df).ToList();
+
+                var answer = StaticBookExtansionDto.MapBookToDto(ctxBooks).ToList();
+                IQueryable<BookListDto> bookListDtos = dto.AsQueryable();
+
+                var orderFilter = StaticBookExtansionDto.OrderBooksBy(bookListDtos, OrderByOptions.ByVotes).ToList();
             }            
         }
     }
